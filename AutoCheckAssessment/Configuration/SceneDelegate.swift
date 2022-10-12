@@ -20,7 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
 //        window.rootViewController = RoutingManager.shared.getRootViewController()
-        window.rootViewController = ViewController()
+        
+        let homeViewController = HomeViewController()
+        
+        let navigationController = UINavigationController(rootViewController: homeViewController)
+        navigationController.isNavigationBarHidden = true
+        window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()
 //Localizer.DoTheExchange()

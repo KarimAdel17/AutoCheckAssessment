@@ -1,0 +1,6 @@
+framework module Pods_AutoCheckAssessmentTests {
+  umbrella header "Pods-AutoCheckAssessmentTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

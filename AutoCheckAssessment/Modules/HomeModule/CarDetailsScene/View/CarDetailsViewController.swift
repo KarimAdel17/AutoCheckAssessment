@@ -6,24 +6,45 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class CarDetailsViewController: UIViewController {
 
+    private let viewModel = CarDetailsViewModel()
+    private let disposeBag = DisposeBag()
+    var carId: String?
+    
+    let containerView = CarDetailsContainerView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        bindViewModel()
+        viewModel.getCarDetails(carId: carId ?? "")
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func loadView() {
+        super.loadView()
+        self.view = containerView
     }
-    */
-
+    
+    func bindViewModel() {
+        viewModel.car.subscribe(
+            onNext: { [weak self] car in
+                self?.containerView.productName.text = car.name
+                self?.containerView.priceLabel.text = car.price
+                if let carImage = car.imageURL {
+                    if let url = URL(string: carImage) {
+                        self?.containerView.carImage.kf.indicatorType = .activity
+                        self?.containerView.carImage.kf.setImage(with: url)
+                    }
+                }
+        },
+        onError: { _ in
+                
+            }
+        )
+        .disposed(by: disposeBag)
+    }
 }
